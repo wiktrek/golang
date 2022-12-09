@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-
-	// "math/rand"
+	"math/rand"
 	"net/http"
-	// "strconv"
+	"strconv"
+
 	"github.com/gorilla/mux"
 )
 type Movie struct{
@@ -49,6 +49,14 @@ func getMovie(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(movies)
 }
 func createMovie(w http.ResponseWriter, r *http.Request) {
+w.Header().Set("Content-Type", "application/json")
+var movie Movie
+_ = json.NewEncoder(w).Encode(movie)
+movie.ID = strconv.Itoa(rand.Intn(1000000000))
+movies = append(movies, movie)
+json.NewEncoder(w).Encode(movie)
+}
+func updateMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	for index, item := range movies{
@@ -58,10 +66,10 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 			_ = json.NewDecoder(r.Body).Decode(&movie)
 			movie.ID = params["id"]
 			json.NewEncoder(w).Encode(movie)
+			return
 		}
 	}
 }
-func updateMovie(w http.ResponseWriter, r *http.Request) {}
 func main() {
 	r := mux.NewRouter()
 	movies = append(movies, Movie{ID: "1", Isbn: "438227", Title: "Movie One", Director: &Director{ Firstname:"John", Lastname: "Doe"}})
