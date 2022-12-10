@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/wiktrek/golang/mysqlcrud/pkg/controllers"
+	"github.com/wiktrek/golang/mysqlcrud/pgk/controllers"
 )
 var RegisterBookStoreRoutes = func(router *mux.Router){
 	router.HandleFunc("/book", controllers.CreateBook).Methods("POST")
